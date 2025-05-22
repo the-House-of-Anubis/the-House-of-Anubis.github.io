@@ -6,6 +6,12 @@ vars:
   GREETING: Hello, World!
 
 tasks:
+
+  quickrun:
+    cmds:
+      - npm install
+      - npm run dev
+    silent: false
   default:
     cmds:
       - task: quickstart
