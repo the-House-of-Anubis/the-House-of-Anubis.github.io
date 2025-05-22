@@ -1,37 +1,29 @@
 <script setup>
+import { ref, onMounted, inject } from 'vue'
+import axios from 'axios'
 import MaskBoard from './MaskBoard.vue'
 
-const colors = {
-  identifiedMasks: {
-    types: {
-      adaptive: '#48c78e',
-      avoidant: '#f14668',
-      compliant: '#ffe08a',
-      searching: '#00d1b2',
-      analytic: '#3273dc',
-      reactive: '#b86bff'
-    },
-    stages: {
-      neutral: '#363636',
-      resistance: '#ff3860',
-      camouflage: '#ffdd57',
-      navigation: '#209cee',
-      passive: '#7a7a7a',
-      resonance: '#a855f7'
-    }
-  }
-}
+const masks = ref([])
+const colors = ref({})
 
-const masks = [
-  { id: 'mirror', label: 'Zwierciadlany Analityk', type: 'adaptive', stage: 'neutral' },
-  { id: 'ghost', label: 'Duch Wzbraniający', type: 'avoidant', stage: 'resistance' },
-  { id: 'actor', label: 'Aktor Afiliacyjny', type: 'compliant', stage: 'camouflage' },
-  { id: 'wanderer', label: 'Zbłąkany Kartograf', type: 'searching', stage: 'navigation' },
-  { id: 'observer', label: 'Obserwator Anonimiczny', type: 'analytic', stage: 'passive' },
-  { id: 'echo', label: 'Niemy Echemistrz', type: 'reactive', stage: 'resonance' },
-]
+const API_URL = inject('UCDI_API')
+
+onMounted(async () => {
+  try {
+    
+    const response = await axios.get(`${API_URL}platonics`)
+    masks.value = response.data.masks
+    colors.value = response.data.colors
+    console.log(response);
+  } catch (error) {
+    console.error("Błąd pobierania masek:", error)
+  }
+})
 </script>
 
 <template>
-  <MaskBoard :colors="colors" :masks="masks" />
+  <MaskBoard v-if="masks.length" :masks="masks" :colors="colors" />
+  <div v-else class="has-text-centered mt-6">
+    <progress class="progress is-small is-primary" max="100">Ładowanie...</progress>
+  </div>
 </template>
