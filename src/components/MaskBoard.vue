@@ -1,10 +1,10 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-// Props
-defineProps({
+// addon dla Props
+const {masks, colors} = defineProps({
   masks: Array,
-  colors: Object
+  colors: Object,
 })
 
 const selected = ref(null)
