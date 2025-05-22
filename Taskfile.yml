@@ -1,0 +1,21 @@
+# https://taskfile.dev
+
+version: '3'
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  default:
+    cmds:
+      - task: quickstart
+    silent: true
+  quickstart:
+    cmds:
+      - cd ~/Documents
+      - git clone https://github.com/the-House-of-Anubis/the-House-of-Anubis.github.io.git
+      - cd the-House-of-Anubis.github.io
+      - npm install
+      - npm run format
+      - npm run dev
+    silent: false
